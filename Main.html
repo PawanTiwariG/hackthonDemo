@@ -1,0 +1,332 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>RFID Scanner</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jspdf/1.2.61/jspdf.min.js"></script>
+    <script src="Main.js"></script>
+    <style>
+        li {
+            border: 1px solid;
+            padding: 7px 7px 7px 7px;
+        }
+
+            li:nth-child(odd) {
+                padding: 7px 7px 7px 7px;
+                background-color: gainsboro
+            }
+
+        .car-heading {
+            border: 1px solid #e0e0e0;
+            font-size: 15px;
+            background-color: lightblue;
+            padding: 5px 5px 5px 5px;
+        }
+
+        .car-details {
+            border: 1px solid #e0e0e0;
+            font-size: 15px;
+            background-color: lightblue;
+            padding: 5px 5px 5px 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row" style="background-color:ButtonHighlight; padding-bottom:20px">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="col-sm-4"><h2>Vehicle Details</h2></div>
+                </div>
+            </div>
+            <div class="row col-sm-12">
+                <div class="col-sm-7">
+                    <div class="col-sm-12" style="">
+                        <div class="col-sm-6 car-heading"><b>Reg No:</b></div>
+                        <div class="col-sm-6 car-details" id="divRegNo"></div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="col-sm-6 car-heading"><b>Owner Name:</b></div>
+                        <div class="col-sm-6 car-details" id="divOwnerName"></div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="col-sm-6 car-heading">Owner Contact No.:</div>
+                        <div class="col-sm-6 car-details" id="divOwnerContact"></div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="col-sm-6 car-heading">Vin No</div>
+                        <div class="col-sm-6 car-details" id="divVinNo"></div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="col-sm-6 car-heading">Reg Year:</div>
+                        <div class="col-sm-6 car-details" id="divRegYear"></div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="col-sm-6 car-heading">Make</div>
+                        <div class="col-sm-6 car-details" id="divMake"></div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="col-sm-6 car-heading">Model</div>
+                        <div class="col-sm-6 car-details" id="divModel"></div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="col-sm-6 car-heading">Model year</div>
+                        <div class="col-sm-6 car-details" id="divModelYear"></div>
+                    </div>
+                </div>
+                <div class="col-sm-5">
+                    <div class="col-sm-4"><img style="height:250px;" id="imgCar" /><a href="Start.html"><h6>Scan Another</h6></a></div>
+                </div>
+
+            </div>
+        </div>
+        <div class="row" style="margin-top:10px; margin-bottom:20px;">
+            <div class="col-sm-6" id="divHistory" style="border-right: solid 1px;">
+                <button class="btn btn-success" style="width:100%">Service History</button>
+            </div>
+
+            <div class="col-sm-6">
+                <button class="btn btn-success" id="divServiceQuote" style="width:100%" data-rfid="">Service Quotation</button>
+            </div>
+        </div>
+
+        <div id="divServiceQutation" class="row" style="display:none">
+            <h3 style="margin-left:40px">Select repair items:</h3>
+            <div class="col-sm-6">
+
+                <ul style="list-style: none">
+
+                    <li class="item question row">
+                        <h4 class="col-sm-8">Engine Oil</h4>
+                        <div class="col-sm-4">
+                            <input type="radio" name="engineoil" value="350" data-heading="Engine Oil" data-options="Yes" /> <label for="html">Yes</label>
+                            <input type="radio" name="engineoil" /> <label for="html">No</label><br>
+                        </div>
+                    </li>
+                    <li class="item question row">
+                        <h4 class="col-sm-8">Oil Filter</h4>
+                        <div class="col-sm-4">
+                            <input type="radio" name="oilfilter" value="1350" data-heading="Oil Filter" data-options="Yes" /> <label for="html">Yes</label>
+                            <input type="radio" name="oilfilter" /> <label for="html">No</label><br>
+                        </div>
+                    </li>
+                    <li class="item question row">
+                        <h4 class="col-sm-8">Windscreen Additive</h4>
+                        <div class="col-sm-4">
+                            <input type="radio" name="windscreen" value="3350" data-heading="Windscreen Additive" data-options="Yes" /> <label for="html">Yes</label>
+                            <input type="radio" name="windscreen" /> <label for="html">No</label><br>
+                        </div>
+                    </li>
+                    <li class="item question row">
+                        <h4 class="col-sm-8">Coolant</h4>
+                        <div class="col-sm-4">
+                            <div class="col-10 phone-col-12">
+                                <input type="radio" name="Coolant" value="150" data-heading="Coolant" data-options="Yes" /> <label for="html">Yes</label>
+                                <input type="radio" name="Coolant" /> <label for="html">No</label><br>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item question row">
+                        <h4 class="col-sm-8">Brake Fluid</h4>
+                        <div class="col-sm-4">
+                            <div class="col-10 phone-col-12">
+                                <input type="radio" name="Brake" value="850" data-heading="Brake Fluid" data-options="Yes" /> <label for="html">Yes</label>
+                                <input type="radio" name="Brake" /> <label for="html">No</label><br>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item question row">
+                        <h4 class="col-sm-8">Power Steering Fluid</h4>
+                        <div class="col-sm-4">
+                            <div class="col-10 phone-col-12">
+                                <input type="radio" name="Power" value="720" data-heading="Power Steering Fluid" data-options="Yes" /> <label for="html">Yes</label>
+                                <input type="radio" name="Power" /> <label for="html">No</label><br>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item question row">
+                        <h4 class="col-sm-8">External lights, instrument warning lights and horn operation</h4>
+                        <div class="col-sm-4">
+                            <div class="col-10 phone-col-12">
+                                <input type="radio" name="External" value="935" data-heading="External lights, instrument warning lights and horn operation" data-options="Yes" /> <label for="html">Yes</label>
+                                <input type="radio" name="External" /> <label for="html">No</label><br>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-sm-6">
+                <ul style="list-style:none">
+                    <li class="item question row">
+                        <h4 class="col-sm-8">Condition of windscreen wipers and washers</h4>
+                        <div class="col-sm-4">
+                            <input type="radio" name="Operation" value="1100" data-heading="Condition of windscreen wipers and washers" data-options="Yes" /> <label for="html">Yes</label>
+                            <input type="radio" name="Operation" /> <label for="html">No</label><br>
+
+                        </div>
+                    </li>
+                    <li class="item question row">
+                        <h4 class="col-sm-8">General oil leaks and advice</h4>
+                        <div class="col-sm-4">
+                            <input type="radio" name="General" value="50" data-heading="General oil leaks and advice" data-options="Yes" /> <label for="html">Yes</label>
+                            <input type="radio" name="General" /> <label for="html">No</label><br>
+
+                        </div>
+                    </li>
+
+                    <li class="item question row">
+                        <h4 class="col-sm-8">Belt replacement intervals and advice</h4>
+                        <div class="col-sm-4">
+                            <input type="radio" name="Timing" value="120" data-heading="Belt replacement intervals and advice" data-options="Yes" /> <label for="html">Yes</label>
+                            <input type="radio" name="Timing" /> <label for="html">No</label><br>
+                        </div>
+                    </li>
+                    <li class="item question row">
+                        <h4 class="col-sm-8">Visual check of brake pads for wear</h4>
+                        <div class="col-sm-4">
+                            <div class="col-10 phone-col-12">
+                                <input type="radio" name="Visual" value="230" data-heading="Visual check of brake pads for wear" data-options="Yes" /> <label for="html">Yes</label>
+                                <input type="radio" name="Visual" /> <label for="html">No</label><br>
+
+                            </div>
+
+                        </div>
+                    </li>
+                    <li class="item question row">
+                        <h4 class="col-sm-8">Tire condition &amp; tire depth</h4>
+                        <div class="col-sm-4">
+                            <div class="col-10 phone-col-12">
+                                <input type="radio" name="tirecondition" value="28" data-heading="Tire condition & tire depth" data-options="Yes" /> <label for="html">Yes</label>
+                                <input type="radio" name="tirecondition" /> <label for="html">No</label><br>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item question row">
+                        <h4 class="col-sm-8">Tire pressure and adjust</h4>
+                        <div class="col-sm-4">
+                            <input type="radio" name="tirepressure" value="20" data-heading="Tire pressure and adjust" data-options="Yes" /> <label for="html">Yes</label>
+                            <input type="radio" name="tirepressure" /> <label for="html">No</label><br>
+
+                        </div>
+                    </li>
+
+                    <li class="item question row">
+                        <h4 class="col-sm-8">Clutch Fluid level</h4>
+                        <div class="col-sm-4">
+                            <input type="radio" name="Clutch" value="150" data-heading="Clutch Fluid level" data-options="Yes" /> <label for="html">Yes</label>
+                            <input type="radio" name="Clutch" /> <label for="html">No</label><br>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div style="margin-left:40px">
+                <div class="row">
+                    <h4 class="col-sm-12">Comments</h4>
+                    <div class="col-sm-12">
+                        <textarea style="height: 100px; width: 100%;" id="txtComments"></textarea>
+                        <input type="button" value="Generate Quotation" id="btnGenerate" class="btn btn-success" />
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div id="divselectedpart" class="col-sm-12" style="display:none">
+            <!--<h4 class="col-sm-12">Selected Quotations</h4>-->
+            <div>&nbsp;</div>
+            <div class="col-sm-12" id="innerparts"></div>
+            <div class="col-sm-4"></div>
+            <div class="col-sm-4" id="innerparts">
+                <button style="width:100%; margin-top:20px" class="btnPrint btn btn-success">Print</button>
+            </div>
+            <div class="col-sm-4"></div>
+        </div>
+        <div id="divServiceHistory" style="display:none">
+            <div class="row serviceHistoryDetails" style="margin-bottom: 20px; border:1px solid" id="divServiceHistory1">
+                <div class="col-sm-12"><b>Service Date: 21/07/2023</b></div>
+                <div class="col-sm-12"><b>Repair Items:</b></div>
+                <div class="col-sm-12">1. Engine Oil</div>
+                <div class="col-sm-12">2. Windscreen Additive</div>
+                <div class="col-sm-12">3. Brake Fluid</div>
+                <div class="col-sm-12">4. Power Steering Fluid</div>
+                <div class="col-sm-12">5. Tire pressure and adjust</div>
+                <div class="col-sm-12">6. Visual check of brake pads for wear</div>
+                <div class="col-sm-12">7. General oil leaks and advice</div>
+            </div>
+            <div class="row serviceHistoryDetails" style="margin-bottom: 20px; border: 1px solid" id="divServiceHistory2">
+                <div class="col-sm-12"><b>Service Date: 15/05/2023</b></div>
+                <div class="col-sm-12"><b>Repair Items:</b></div>
+                <div class="col-sm-12">1. Engine Oil</div>
+                <div class="col-sm-12">2. Windscreen Additive</div>
+                <div class="col-sm-12">3. Coolant</div>
+                <div class="col-sm-12">4. Power Steering Fluid</div>
+                <div class="col-sm-12">5. External lights, instrument warning lights and horn operation</div>
+                <div class="col-sm-12">6. Tire pressure and adjust</div>
+                <div class="col-sm-12">7. Visual check of brake pads for wear</div>
+                <div class="col-sm-12">8. Timing belt replacement intervals and advice</div>
+                <div class="col-sm-12">9. Operation and condition of windscreen wipers and washers</div>
+            </div>
+            <div class="row serviceHistoryDetails" style="margin-bottom: 20px; border: 1px solid" id="divServiceHistory3">
+                <div class="col-sm-12"><b>Service Date: 04/03/2023</b></div>
+                <div class="col-sm-12"><b>Repair Items:</b></div>
+                <div class="col-sm-12">1. Engine Oil</div>
+                <div class="col-sm-12">2. Oil Filter</div>
+                <div class="col-sm-12">3. Windscreen Additive</div>
+                <div class="col-sm-12">4. Coolant</div>
+                <div class="col-sm-12">5. Brake Fluid</div>
+                <div class="col-sm-12">6. Power Steering Fluid</div>
+                <div class="col-sm-12">7. Tire condition & tire depth</div>
+                <div class="col-sm-12">8 Visual check of brake pads for wear</div>
+                <div class="col-sm-12">9. Timing belt replacement intervals and advice</div>
+                <div class="col-sm-12">10. General oil leaks and advice</div>
+            </div>
+            <div class="row serviceHistoryDetails" style="margin-bottom: 20px; border: 1px solid" id="divServiceHistory4">
+                <div class="col-sm-12"><b>Service Date: 28/01/2023</b></div>
+                <div class="col-sm-12"><b>Repair Items:</b></div>
+                <div class="col-sm-12">1. Engine Oil</div>
+                <div class="col-sm-12">2. Oil Filter</div>
+                <div class="col-sm-12">3. Coolant</div>
+                <div class="col-sm-12">4. Brake Fluid</div>
+                <div class="col-sm-12">5. External lights, instrument warning lights and horn operation</div>
+                <div class="col-sm-12">6. Clutch Fluid level</div>
+                <div class="col-sm-12">7. Tire pressure and adjust</div>
+                <div class="col-sm-12">8. Visual check of brake pads for wear</div>
+                <div class="col-sm-12">9. Timing belt replacement intervals and advice</div>
+                <div class="col-sm-12">10. Operation and condition of windscreen wipers and washers</div>
+            </div>
+            <div class="row serviceHistoryDetails" style="margin-bottom: 20px; border: 1px solid" id="divServiceHistory5">
+                <div class="col-sm-12"><b>Service Date: 13/11/2022</b></div>
+                <div class="col-sm-12"><b>Repair Items:</b></div>
+                <div class="col-sm-12">1. Engine Oil</div>
+                <div class="col-sm-12">2. Oil Filter</div>
+                <div class="col-sm-12">3. Windscreen Additive</div>
+                <div class="col-sm-12">4. Coolant</div>
+                <div class="col-sm-12">5. Brake Fluid</div>
+                <div class="col-sm-12">6. Power Steering Fluid</div>
+                <div class="col-sm-12">7. Tire pressure and adjust</div>
+                <div class="col-sm-12">8. Tire condition & tire depth</div>
+                <div class="col-sm-12">9. Visual check of brake pads for wear</div>
+                <div class="col-sm-12">10. General oil leaks and advice</div>
+            </div>
+            <div class="col-sm-4"></div>
+            <div class="col-sm-4" id="innerparts">
+                <button style="width:100%; margin-top:20px" class="btnPrint btn btn-success">Print</button>
+            </div>
+            <div class="col-sm-4"></div>
+        </div>
+
+        <div style="height:100px">
+            &nbsp;
+        </div>
+    </div>
+</body>
+</html>

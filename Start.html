@@ -1,0 +1,249 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>RFID Scanner</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .parent {
+            width: 200px;
+            height: 200px;
+            box-shadow: 0 0 20px 0px rgba(0,0,0,0.3);
+            border-radius: 100px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .animation_btn {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all .3s ease-in-out;
+            overflow: hidden;
+            position: relative;
+        }
+
+            .animation_btn:hover {
+                color: green;
+            }
+
+        .scan::before {
+            content: "";
+            width: 100%;
+            height: 20px;
+            position: absolute;
+            top: 0;
+            z-index: 10;
+            left: 0;
+            opacity: 0.5;
+            background-color: green;
+            animation: scan 3s linear infinite;
+        }
+
+
+        .scan::after {
+            content: "Scanning RFID";
+            width: 100%;
+            height: 100%;
+            z-index: 5;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: #ddd;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: blink 3s linear infinite;
+        }
+
+        .noise {
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            z-index: 10;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+            .noise p {
+                animation: noise 0.7s linear infinite;
+                opacity: 0.6;
+            }
+
+            .noise span {
+                animation: noise 1s linear infinite;
+                opacity: 0.6;
+            }
+
+            .noise div {
+                animation: noise 0.5s linear infinite;
+                opacity: 0.6;
+            }
+
+        @keyframes scan {
+            0% {
+                top: 0;
+                transform: translatey(-100%);
+            }
+
+            50% {
+                top: 100%;
+                transform: translatey(0);
+            }
+
+            100% {
+                top: 0;
+                transform: translatey(-100%);
+            }
+        }
+
+        @keyframes noise {
+            0% {
+                transform: translate(-5px, 5px);
+            }
+
+            10% {
+                transform: translate(5px, -5px);
+            }
+
+            20% {
+                transform: translate(-5px, 5px);
+            }
+
+            30% {
+                transform: translate(5px,-5px);
+            }
+
+            40% {
+                transform: translate(-5px, 5px);
+            }
+
+            50% {
+                transform: translate(-10%, -5px);
+            }
+
+            60% {
+                transform: translate(5px, -5px);
+            }
+
+            70% {
+                transform: translate(-5px, 5px);
+            }
+
+            80% {
+                transform: translate(5px,-5px);
+            }
+
+            90% {
+                transform: translate(-5px, 5px);
+            }
+
+            100% {
+                transform: translate(-10%, -5px);
+            }
+        }
+
+        @keyframes blink {
+            0% {
+                color: black;
+            }
+
+            25% {
+                color: green;
+            }
+
+            50% {
+                color: black;
+            }
+
+            75% {
+                color: green;
+            }
+
+            100% {
+                color: black;
+            }
+        }
+        </style>
+    <script>
+        $(document).ready(() => {
+            $('.animation_btn').on('click', (e) => {
+                $(e.target).toggleClass('scan');
+                if ($('.noise').length) {
+                    $('.noise').remove();
+                } else {
+                    let noisy = document.createElement('div');
+                    $(noisy).addClass('noise');
+                    $('.parent').append(noisy);
+                    noise();
+                }
+            });
+            setTimeout(
+                function () {
+                    window.location.href = "Main.html"
+                }, 5000);
+        });
+
+        function noise() {
+            for (let i = 0; i < 4; i++) {
+                let point = document.createElement('p');
+                let span = document.createElement('span');
+                let div = document.createElement('div');
+
+                $(point).css({
+                    width: '1px',
+                    height: '1px',
+                    'background-color': '#006400',
+                    position: 'absolute',
+                    top: Math.round(Math.random() * 150) - 30 + '%',
+                    left: Math.round(Math.random() * 150) + '%',
+                });
+
+                $(span).css({
+                    width: '1px',
+                    height: '1px',
+                    'background-color': '#00FF00',
+                    position: 'absolute',
+                    top: Math.round(Math.random() * 200) - 30 + '%',
+                    left: Math.round(Math.random() * 200) + '%',
+                });
+
+                $(div).css({
+                    width: '1px',
+                    height: '1px',
+                    'background-color': '#00FA9A',
+                    position: 'absolute',
+                    top: Math.round(Math.random() * 200) - 30 + '%',
+                    left: Math.round(Math.random() * 200) + '%',
+                });
+
+                $('.noise').append(point);
+                $('.noise').append(span);
+                $('.noise').append(div);
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="parent">
+        <div class="animation_btn">
+            Scan
+        </div>
+    </div>
+</body>
+</html>
